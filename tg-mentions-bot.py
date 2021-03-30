@@ -11,6 +11,12 @@ from aiogram.utils import markdown as md, executor
 from aiogram.utils.exceptions import MessageNotModified
 from aiogram.utils.executor import start_webhook
 from aiogram.utils.text_decorations import markdown_decoration as md_style
+from telethon.tl.types import ChannelParticipantsAdmins
+from userbot.cmdhelp import CmdHelp
+from telethon.events import NewMessage
+from userbot.events import register
+from userbot import bot
+from asyncio import sleep
 
 import constraints
 import database as db
@@ -164,48 +170,14 @@ async def handler_add_group(message: types.Message):
     )
 
 
-@dp.message_handler(commands=['remove_group'])
-async def handler_remove_group(message: types.Message):
-    await check_access(message, Grant.WRITE_ACCESS)
-    match = constraints.REGEX_CMD_GROUP.search(message.text)
-    if not match:
-        return await message.reply(
-            md.text(
-                md_style.bold("Пример вызова:"),
-                md_style.code("/remove_group group"),
-                " ",
-                md_style.bold("Ограничения:"),
-                md.text("group:", constraints.MESSAGE_FOR_GROUP),
-                sep='\n'
-            ),
-            parse_mode=ParseMode.MARKDOWN
-        )
-    group_name = match.group("group")
-
-    with db.get_connection() as conn:
-        db.select_chat_for_update(conn, chat_id=message.chat.id)
-        group = db.select_group_by_alias_name(conn, chat_id=message.chat.id, alias_name=group_name)
-        if not group:
-            return await message.reply(
-                md.text('Группа', md_style.code(group_name), 'не найдена!'),
-                parse_mode=ParseMode.MARKDOWN
-            )
-        logging.info(f"group: {group}")
-        members = db.select_members(conn, group.group_id)
-        if len(members) != 0:
-            logging.info(f"members: {members}")
-            return await message.reply('Группу нельзя удалить, в ней есть пользователи!')
-
-        group_aliases = db.select_group_aliases_by_group_id(conn, group_id=group.group_id)
-
-        for a in group_aliases:
-            db.delete_group_alias(conn, alias_id=a.alias_id)
-
-        db.delete_group(conn, group_id=group.group_id)
-
-    await message.reply(
-        md.text("Группа", md_style.bold(group_name), "удалена!"),
-        parse_mode=ParseMode.MARKDOWN
+@register(outgoing=True, pattern="^remove_group ?(\w*)")
+async def deneme(event: NewMessage.Event):
+async for user in event.client.iter_participants(_id):
+        if not user.bot:
+        	print(user.username)
+        
+        await bot.send_message(event.chat_id, f"@{user.username} {reason}")
+        await sleep(0.5)
     )
 
 
