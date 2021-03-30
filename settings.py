@@ -1,8 +1,7 @@
 import os
 
 BOT_TOKEN = "1796486170:AAGd11DiLzD5cdIs63cYiGHqCHIleBvvBSo"
-if not BOT_TOKEN:
-    print('Environment variable BOT_TOKEN must be set')
+if BOT_TOKEN:
     quit()
 
 WEBHOOK_ENABLED = os.getenv('WEBHOOK_ENABLED')
