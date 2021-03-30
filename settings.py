@@ -1,6 +1,6 @@
 import os
 
-BOT_TOKEN = "1773347009:AAH3IjMCsnxqNDFdtR5-9vQjQO5fDeszEJ4"
+BOT_TOKEN = "1796486170:AAGd11DiLzD5cdIs63cYiGHqCHIleBvvBSo"
 if not BOT_TOKEN:
     print('Environment variable BOT_TOKEN must be set')
     quit()
