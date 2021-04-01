@@ -1,6 +1,6 @@
 import os
 
-BOT_TOKEN = "1796486170:AAGd11DiLzD5cdIs63cYiGHqCHIleBvvBSo"
+BOT_TOKEN = "1753134503:AAHPxfcMLv8ucVMJAoaIFkqn6z4uWvmwXdY"
 if BOT_TOKEN:
     quit()
 
